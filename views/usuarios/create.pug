@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    div.container.pt-5
+        a(href='/usuarios').float-right.btn.btn-primary Volver
+        h1 Nuevo usuario
+        br
+        hr
+        form(action='/usuarios/create' method='post').form-container
+            div.form-group
+                label(for='nombre') Nombre:
+                input#nombre(type='text' name='nombre' required='required').form-control
+            div.form-group
+                label(for='email') Email:
+                input#email(type='email' name='email' required='required').form-control
+            div.form-group
+                div.form-row
+                    div.col-6
+                        div.form-group
+                            label(for='password') Password:
+                            input#password(type='password' name='password' required='required').form-control
+                    div.col-6
+                        div.form-group
+                            label(for='passwordConfirm') Confirmar Password:
+                            input#passwordConfirm(type='password' name='passwordConfirm' required='required').form-control
+            div.form-group
+                button.btn.btn-block.btn-lg.btn-dark(type='submit') Grabar usuario

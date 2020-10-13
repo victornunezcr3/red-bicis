@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+    div.container.pt-5
+        a(href='/usuarios').float-right.btn.btn-primary Volver
+        h1 Modificar usuario
+        br
+        hr
+        form(action=`/usuarios/${usuario.email}/update` method='post').form-container
+            div.form-group
+                label(for='nombre') Nombre:
+                input#nombre(type='text' name='nombre' required='required' value=usuario.nombre).form-control
+            div.form-group
+                label(for='email') Email:
+                input#email(type='email' name='email' readonly='readonly' required='required' value=usuario.email).form-control
+            div.form-group
+                button.btn.btn-block.btn-lg.btn-dark(type='submit') Grabar usuario

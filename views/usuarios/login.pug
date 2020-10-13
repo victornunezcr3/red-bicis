@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+    div.container.pt-5
+        h1 Login usuario
+        br
+        hr
+        form(action='/usuarios/login' method='post').form-container
+            div.form-group
+                label(for='usuario') Usuario:
+                input#usuario(type='email' name='usuario' autofocus='autofocus' placeholder='Ingrese su dirección de Email' required='required').form-control
+            div.form-group
+                label(for='password') Password:
+                input#password(type='password' name='password' required='required').form-control
+            div.form-group
+                button.btn.btn-block.btn-lg.btn-dark(type='submit') Ingresar

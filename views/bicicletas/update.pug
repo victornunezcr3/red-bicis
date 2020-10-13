@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+    div.container.pt-5
+        a(href='/bicicletas').float-right.btn.btn-primary Volver
+        h1 Modificar Bicicleta
+        br
+        hr
+        form(action=`/bicicletas/${bici.code}/update` method='post').form-container
+            div.form-group
+                label(for='id') ID:
+                input#id(type='text' name='id' required='required' readonly='readonly' value=bici.id).form-control
+            div.form-group
+                label(for='id') Code:
+                input#code(type='number' name='code' min='1' step='1' required='required' readonly='readonly' value=bici.code).form-control
+            div.form-group
+                label(for='color') Color:
+                input#color(type='text' name='color' required='required' value=bici.color).form-control
+            div.form-group
+                label(for='modelo') Modelo:
+                input#modelo(type='text' name='modelo' required='required' value=bici.modelo).form-control
+            div.form-group
+                div.form-row
+                    div.col-6
+                        div.form-group
+                            label(for='lat') Ubicacion (Latitud):
+                            input#lat(type='number' name='lat' min='-34.9999999' max='-34.0000001' step='0.0000001' required='required' value=bici.ubicacion[0]).form-control
+                            span.text-muted Ingrese latitudes entre -34.9999999 y -34.0000001
+                    div.col-6
+                        div.form-group
+                            label(for='lng') Ubicacion (Longitud):
+                            input#lng(type='number' name='lng' min='-58.9999999' max='-58.0000001' step='0.0000001' required='required' value=bici.ubicacion[1]).form-control
+                            span.text-muted Ingrese longitudes entre -58.9999999 y -58.0000001
+            div.form-group
+                button.btn.btn-block.btn-lg.btn-dark(type='submit') Grabar Bicicleta
