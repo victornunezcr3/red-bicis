@@ -1,4 +1,4 @@
-var bicicletasApiRouter = require('./routes/api/bicicletas');
+require('dotenv').config();
 var bicicletasRouter = require('./routes/bicicletas');
 var Usuario = require('./models/usuario');
 var cookieParser = require('cookie-parser');
@@ -46,7 +46,8 @@ app.use(session({
 }));
 
 // var mongoDB = 'mongodb://victorml:victorml@127.0.0.1:27017/red_bicicletas?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false';
-var mongoDB = 'mongodb+srv://ingvictormlnunez:Manolo842703*@cluster0.qskup.mongodb.net/test';
+//var mongoDB = 'mongodb+srv://ingvictormlnunez:Manolo842703*@cluster0.qskup.mongodb.net/test';
+var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -74,7 +75,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/usuarios', loggedIn, usersRouter);
-//app.use('/bicicletas', bicicletasRouter);
+app.use('/bicicletas', loggedIn, bicicletasRouter);
 //app.use('/api/bicicletas', bicicletasApiRouter);
 //app.use('/api/usuario', usuariospiRouter);
 app.use('/token', tokenRouter);
@@ -155,6 +156,10 @@ app.post('/resetPassword', function(req, res) {
         });
     });
 
+});
+
+app.use('/privacy_policy', function(req, res) {
+    res.sendFile('public/privacy_policy.html');
 });
 
 // catch 404 and forward to error handler
