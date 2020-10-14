@@ -161,6 +161,27 @@ app.post('/resetPassword', function(req, res) {
 app.use('/privacy_policy', function(req, res) {
     res.sendFile('public/privacy_policy.html');
 });
+app.use('/googlec123456789', function(req, res) {
+    res.sendFile('public/googlec123456789.html');
+})
+
+app.get('/auth/google',
+    passport.authenticate('google', {
+            scope: [
+                'profile', 'email'
+            ]
+        }
+        //'https://www.googleapis.com/auth/plus.login',
+        //'https://www.googleapis.com/auth/plus.profile.emails.read'] } 
+    )
+);
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/error'
+    })
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
