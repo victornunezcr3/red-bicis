@@ -39,7 +39,7 @@ passport.use(new FacebookTokenStrategy({
     }
 ));
 
-passport.use(new GoogleStrategy({
+/* passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: process.env.HOST = '/auth/google/callback'
@@ -50,7 +50,7 @@ passport.use(new GoogleStrategy({
         Usuario.findOneOrCreateByGoogle(profile, function(err, user) {
             return cb(err, user);
         });
-    }));
+    })); */
 
 
 passport.serializeUser(function(user, cb) {
