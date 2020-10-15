@@ -42,7 +42,9 @@ var usuarioSchema = new Schema({
     verificado: {
         type: Boolean,
         default: false
-    }
+    },
+    googleId: String,
+    facebookId: String
 });
 
 usuarioSchema.plugin(uniqueValidator, { message: 'El {PATH} ya existe con otro usuario' });
@@ -142,9 +144,69 @@ usuarioSchema.methods.enviarEmailBienvenida = function(cb) {
 }
 
 usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb) {
-        var reserva = new Reserva({ usuario: this._id, bicicleta: biciId, desde: desde, hasta: hasta });
-        console.log(reserva);
-        reserva.save(cb);
-    }
-    // Exportamos el modelo para usarlo en otros ficheros
+    var reserva = new Reserva({ usuario: this._id, bicicleta: biciId, desde: desde, hasta: hasta });
+    console.log(reserva);
+    reserva.save(cb);
+}
+
+usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(condition, callback) {
+    const self = this;
+    console.log(condition);
+    self.findOne({
+        $or: [
+            { 'googleId': condition.id }, { 'email': condition.emails[0].value }
+        ]
+    }, (err, result) => {
+        if (result) {
+            callback(err, result)
+        } else {
+            console.log('============ CONDITION =========');
+            console.log(condition);
+            let values = {};
+            values.googleId = condition.id;
+            values.email = condition.emails[0].value;
+            values.name = condition.displayName || 'SIN NOMBRE';
+            values.verificado = true;
+            values.password = 'oauth'; //condition._json.etag;
+            console.log('============ VALUES =========');
+            console.log(values);
+            self.createImageBitmap(values, (err, result) => {
+                if (err) { console.log(err); }
+                return callback(err, result)
+            })
+        }
+    })
+};
+
+usuarioSchema.statics.findOneOrCreateByFacebook = function findOneOrCreate(condition, callback) {
+    const self = this;
+    console.log(condition);
+    self.findOne({
+        $or: [
+            { 'facebookId': condition.id }, { 'email': condition.emails[0].value }
+        ]
+    }, (err, result) => {
+        if (result) {
+            callback(err, result)
+        } else {
+            console.log('============ CONDITION =========');
+            console.log(condition);
+            let values = {};
+            values.googleId = condition.id;
+            values.email = condition.emails[0].value;
+            values.nombre = condition.displayName || 'SIN NOMBRE';
+            values.verificado = true;
+            values.password = crypto.randomBytes(16).toString('hex');
+            console.log('============ VALUES =========');
+            console.log(values);
+            self.create(values, (err, result) => {
+                if (err) { console.log(err); }
+                return callback(err, result)
+            })
+        }
+    })
+};
+
+// Exportamos el modelo para usarlo en otros ficheros
+
 module.exports = mongoose.model('Usuario', usuarioSchema);
