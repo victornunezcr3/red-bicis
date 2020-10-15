@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('newrelic');
 var bicicletasRouter = require('./routes/bicicletas');
 var Usuario = require('./models/usuario');
 var cookieParser = require('cookie-parser');
